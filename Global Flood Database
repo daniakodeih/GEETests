@@ -1,0 +1,3 @@
+/**** Start of imports. If edited, may not auto-convert in the playground. ****/
+var imageCollection = ee.ImageCollection("GLOBAL_FLOOD_DB/MODIS_EVENTS/V1");
+/***** End of imports. If edited, may not auto-convert in the playground. *****/

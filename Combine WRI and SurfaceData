@@ -63,7 +63,7 @@ var fvLayer = ui.Map.FeatureViewLayer('WRI/GPPD/power_plants_FeatureView');
 
 // comment
 var visParams = {
-  opacity: 0.65,
+  opacity: 1,
   color: {
     property: 'fuel1',
     categories: [

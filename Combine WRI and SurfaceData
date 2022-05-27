@@ -198,7 +198,7 @@ Map.addLayer(
 // Flood event Harvey
 var tropStormHarveyId = 4510;
 var tropStormHarvey = ee.Image(
-    gfd.filterMetadata('id', 'equals', tropStormHarveyId).first());
+    gfd.filterMetadata('id', 'equals', tropStormHarveyId));
 
 print(tropStormHarvey)
 

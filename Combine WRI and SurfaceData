@@ -211,14 +211,21 @@ var series = gfd.filterDate('2017-01-01', '2018-12-31').map(function(image) {
 });
 
 
-
 print(series);
 
-var cumulative = ee.ImageCollection(series.iterate(accumulate, series.first()));
+// This function adds a band representing the image timestamp.
+var addTime = function(image) {
+  return image.addBands(image.getNumber('system:time_start'));
+};
 
-print (cumulative);
+// Map the function over the collection and display the result.
+//print(gfd.map(addTime));
 
-Map.addLayer(cumulative.sum());
+//var cumulative = ee.ImageCollection(series.iterate(accumulate, series.first()));
+
+//print (cumulative);
+
+Map.addLayer(series.sum());
 
 Map.addLayer(
   hurricaneIsaacUsa.select('flooded').selfMask(),
@@ -231,6 +238,27 @@ Map.addLayer(
   hurricaneIsaacUsa.select('duration').selfMask(),
   {min: 0, max: 4, palette: durationPalette},
   'Hurricane Isaac - Duration');
+  
+  
+  
+// Define a list of unique observation years from the image collection.
+var years = ee.List(series).distinct().sort();
+
+// Map over the list of years to build a list of annual image composites.
+var lsCompList = years.map(function(year) {
+  return lsCol
+    // Filter image collection by year.
+    .filterMetadata('year', 'equals', year)
+    // Apply cloud mask.
+    .map(maskL457sr)
+    // Reduce image collection by median.
+    .reduce(ee.Reducer.median())
+    // Set composite year as an image property.
+    .set('year', year);
+});
+
+// Convert the image List to an ImageCollection.
+var lsCompCol = ee.ImageCollection.fromImages(lsCompList);
   
 
 // Map all floods to generate the satellite-observed historical flood plain.

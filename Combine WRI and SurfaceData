@@ -239,27 +239,14 @@ Map.addLayer(
   {min: 0, max: 4, palette: durationPalette},
   'Hurricane Isaac - Duration');
   
-  
-  
 // Define a list of unique observation years from the image collection.
-var years = ee.List(series).distinct().sort();
-
-// Map over the list of years to build a list of annual image composites.
-var lsCompList = years.map(function(year) {
-  return lsCol
-    // Filter image collection by year.
-    .filterMetadata('year', 'equals', year)
-    // Apply cloud mask.
-    .map(maskL457sr)
-    // Reduce image collection by median.
-    .reduce(ee.Reducer.median())
-    // Set composite year as an image property.
-    .set('year', year);
-});
+var years = series.aggregate_array('id').distinct().sort();
 
 // Convert the image List to an ImageCollection.
-var lsCompCol = ee.ImageCollection.fromImages(lsCompList);
+var lsCompCol = ee.ImageCollection.fromImages(years);
   
+print (lsCompCol);
+Map.addLayer(lsCompCol);
 
 // Map all floods to generate the satellite-observed historical flood plain.
 var gfdFloodedSum = gfd.select('flooded').sum();

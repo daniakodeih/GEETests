@@ -182,8 +182,8 @@ var hurricaneIsaacUsa = ee.Image(
 print(hurricaneIsaacUsa)
 
 
-// Define reference conditions from the last 2 years of data.
-var reference = gfd.filterDate('2017-01-01', '2018-12-31')
+// Define reference conditions from the first 10 years of data.
+var reference = gfd.filterDate('2000-01-01', '2010-12-31')
   // Sort chronologically in descending order.
   .sort('system:time_start', false);
 
@@ -194,6 +194,26 @@ var mean = reference.mean();
 
 print(mean);
   
+// This is a function to pass to Iterate().
+// As anomaly images are computed, add them to the list.
+var accumulate = function(image, list) {
+
+  var previous = ee.Image(ee.List(list).get(-1));
+  var added = image.add(previous)
+    // Propagate metadata to the new image.
+    .set('system:time_start', image.get('system:time_start'));
+  // Return the list with the cumulative anomaly inserted.
+  return ee.List(list).add(added);
+};
+
+var series = gfd.filterDate('2017-01-01', '2018-12-31').map(function(image) {
+    return image.subtract(mean).set('system:time_start', image.get('system:time_start'));
+});
+
+
+var cumulative = ee.ImageCollection(ee.List(series.iterate(accumulate, reference.first())));
+
+print (cumulative);
 
 
 Map.addLayer(

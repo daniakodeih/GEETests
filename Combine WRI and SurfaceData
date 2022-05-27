@@ -214,7 +214,7 @@ var series = gfd.filterDate('2017-01-01', '2018-12-31').map(function(image) {
 
 print(series);
 
-var cumulative = ee.ImageCollection(ee.List(series.iterate(accumulate, reference.first())));
+var cumulative = ee.ImageCollection(series.iterate(accumulate, series.first()));
 
 print (cumulative);
 

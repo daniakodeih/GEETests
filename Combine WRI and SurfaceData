@@ -166,3 +166,5 @@ fuelColor.keys().evaluate(function(fuelsList) {
   fuelsList.map(addLayer);
 });
 */
+
+ee.ImageCollection("GLOBAL_FLOOD_DB/MODIS_EVENTS/V1")

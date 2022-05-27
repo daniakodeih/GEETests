@@ -214,7 +214,7 @@ var accumulate = function(image, list) {
 };
 
 var series = gfd.filterDate('2017-01-01', '2018-12-31').map(function(image) {
-    return image.select('flooded');
+    return image.select('flooded').selfMask();
 });
 
 
@@ -228,7 +228,7 @@ Map.addLayer(
   'Hurricane Isaac - Inundation Extent');
   
 // The duration (number of days a flood event lasted).
-var durationPalette = ['C3EFFE', '1341E8', '051CB0', '001133'];
+var durationPalette = ['C3EFF1', '1341E1', '051CBF', '00113F'];
 Map.addLayer(
   hurricaneIsaacUsa.select('duration').selfMask(),
   {min: 0, max: 4, palette: durationPalette},

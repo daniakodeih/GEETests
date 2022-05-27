@@ -204,7 +204,7 @@ Map.addLayer(
 // Compute the mean of the first 5 years.
 var mean = reference.mean();
 
-  
+print(mean);
   
 // Map all floods to generate the satellite-observed historical flood plain.
 var gfdFloodedSum = gfd.select('flooded').sum();

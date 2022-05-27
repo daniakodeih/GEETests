@@ -182,8 +182,8 @@ var hurricaneIsaacUsa = ee.Image(
 print(hurricaneIsaacUsa)
 
 
-// Define reference conditions from the first 10 years of data.
-var reference = gfd.filterDate('2005-01-01', '2010-12-31')
+// Define reference conditions from the last 2 years of data.
+var reference = gfd.filterDate('2017-01-01', '2018-12-31')
   // Sort chronologically in descending order.
   .sort('system:time_start', false);
 
@@ -194,6 +194,7 @@ var mean = reference.mean();
 
 print(mean);
   
+
 
 Map.addLayer(
   hurricaneIsaacUsa.select('flooded').selfMask(),

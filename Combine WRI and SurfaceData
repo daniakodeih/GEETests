@@ -201,15 +201,9 @@ Map.addLayer(
   {min: 0, max: 4, palette: durationPalette},
   'Hurricane Isaac - Duration');
   
-// Compute the mean of the first 10 years.
+// Compute the mean of the first 5 years.
 var mean = reference.mean();
-  
-// The duration (number of days a flood event lasted).
-var durationPalette = ['C3EFFE', '1341E8', '051CB0', '001133'];
-Map.addLayer(
-  tropStormHarvey.select('duration').selfMask(),
-  {min: 0, max: 4, palette: durationPalette},
-  'Tropical Storm Harvey - Duration')
+
   
   
 // Map all floods to generate the satellite-observed historical flood plain.

@@ -240,10 +240,12 @@ Map.addLayer(
   'Hurricane Isaac - Duration');
   
 // Define a list of unique observation years from the image collection.
-var years = series.aggregate_array('id').distinct().sort();
+//var years = series.aggregate_array('id').distinct().sort();
+
+var list = ee.FeatureCollection(series);
 
 // Convert the image List to an ImageCollection.
-var lsCompCol = ee.ImageCollection.fromImages(years);
+var lsCompCol = ee.ImageCollection.fromImages(list);
   
 print (lsCompCol);
 Map.addLayer(lsCompCol);

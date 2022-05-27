@@ -190,16 +190,16 @@ var addTime = function(image) {
 };
 
 // Define reference conditions from the first 10 years of data.
-var reference = gfd.filterDate('2000-01-01', '2010-12-31').map(addTime)
+var reference = gfd.filterDate('2000-01-01', '2010-12-31').map(addTime);
 
 
 print(reference)
 
-// Compute the mean of the first 5 years.
-var min = gfd.min();
-print(min);
+// Compute the mean of the full data set
+var mean = gfd.mean();
+print(mean);
 
-Map.addLayer(min, {bands: ['flooded'], max: 1}, 'Mean');
+Map.addLayer(mean.select('flooded').selfMask(),  {min: 0, max: 1}, 'Mean');
   
 // This is a function to pass to Iterate().
 // As anomaly images are computed, add them to the list.

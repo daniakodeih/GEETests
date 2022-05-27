@@ -172,9 +172,7 @@ fuelColor.keys().evaluate(function(fuelsList) {
 
 var gfd = ee.ImageCollection("GLOBAL_FLOOD_DB/MODIS_EVENTS/V1")
 
-var flooddata = ee.FeatureCollection("GLOBAL_FLOOD_DB/MODIS_EVENTS/V1")
-
-print(flooddata)
+print(gfd)
 
 // An individual flood event - flooding due to Hurricane Isaac in the USA.
 var hurricaneIsaacDartmouthId = 3977;
@@ -182,6 +180,14 @@ var hurricaneIsaacUsa = ee.Image(
     gfd.filterMetadata('id', 'equals', hurricaneIsaacDartmouthId).first());
 
 print(hurricaneIsaacUsa)
+
+
+// Define reference conditions from the first 10 years of data.
+var reference = gfd.filterDate('2005-01-01', '2010-12-31')
+  // Sort chronologically in descending order.
+  .sort('system:time_start', false);
+
+print(reference)
 
 Map.addLayer(
   hurricaneIsaacUsa.select('flooded').selfMask(),
@@ -195,17 +201,8 @@ Map.addLayer(
   {min: 0, max: 4, palette: durationPalette},
   'Hurricane Isaac - Duration');
   
-// Flood event Harvey
-var tropStormHarveyId = 4510;
-var tropStormHarvey = ee.Image(
-    gfd.filterMetadata('id', 'equals', tropStormHarveyId));
-
-print(tropStormHarvey)
-
-Map.addLayer(
-  tropStormHarvey.select('flooded').selfMask(),
-  {min: 0, max: 2, palette: '001133'},
-  'Tropical Storm Harvey - Inundation Extent');
+// Compute the mean of the first 10 years.
+var mean = reference.mean();
   
 // The duration (number of days a flood event lasted).
 var durationPalette = ['C3EFFE', '1341E8', '051CB0', '001133'];

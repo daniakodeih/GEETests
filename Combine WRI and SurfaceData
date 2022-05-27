@@ -200,6 +200,8 @@ var tropStormHarveyId = 4510;
 var tropStormHarvey = ee.Image(
     gfd.filterMetadata('id', 'equals', tropStormHarveyId).first());
 
+print(tropStormHarvey)
+
 Map.addLayer(
   tropStormHarvey.select('flooded').selfMask(),
   {min: 0, max: 1, palette: '001133'},

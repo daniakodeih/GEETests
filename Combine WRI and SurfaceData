@@ -207,14 +207,18 @@ var accumulate = function(image, list) {
 };
 
 var series = gfd.filterDate('2017-01-01', '2018-12-31').map(function(image) {
-    return image.subtract(mean).set('system:time_start', image.get('system:time_start'));
+    return image.select('flooded');
 });
 
+
+
+print(series);
 
 var cumulative = ee.ImageCollection(ee.List(series.iterate(accumulate, reference.first())));
 
 print (cumulative);
 
+Map.addLayer(cumulative.sum());
 
 Map.addLayer(
   hurricaneIsaacUsa.select('flooded').selfMask(),

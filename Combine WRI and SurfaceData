@@ -172,6 +172,8 @@ fuelColor.keys().evaluate(function(fuelsList) {
 
 var gfd = ee.ImageCollection("GLOBAL_FLOOD_DB/MODIS_EVENTS/V1")
 
+var flooddata = ee.FeatureCollection("GLOBAL_FLOOD_DB/MODIS_EVENTS/V1")
+
 // An individual flood event - flooding due to Hurricane Isaac in the USA.
 var hurricaneIsaacDartmouthId = 3977;
 var hurricaneIsaacUsa = ee.Image(

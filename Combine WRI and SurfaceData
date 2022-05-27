@@ -176,8 +176,7 @@ var gfd = ee.ImageCollection("GLOBAL_FLOOD_DB/MODIS_EVENTS/V1")
 var hurricaneIsaacDartmouthId = 3977;
 var hurricaneIsaacUsa = ee.Image(
     gfd.filterMetadata('id', 'equals', hurricaneIsaacDartmouthId).first());
-Map.setOptions('STREET');
-Map.setCenter(-90.2922, 29.4064, 9);
+
 Map.addLayer(
   hurricaneIsaacUsa.select('flooded').selfMask(),
   {min: 0, max: 1, palette: '001133'},

@@ -179,7 +179,7 @@ var hurricaneIsaacDartmouthId = 3977;
 var hurricaneIsaacUsa = ee.Image(
     gfd.filterMetadata('id', 'equals', hurricaneIsaacDartmouthId).first());
 
-print(gfd)
+print(flooddata)
 
 Map.addLayer(
   hurricaneIsaacUsa.select('flooded').selfMask(),

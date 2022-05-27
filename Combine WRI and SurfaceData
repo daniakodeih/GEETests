@@ -31,7 +31,8 @@ var water_mask = occurrence.gt(90).unmask(0);
 //////////////////////////////////////////////////////////////
 
 // Uncomment one of the following statements to center the map.
- Map.setCenter(-90.162, 29.8597, 10);   // New Orleans, USA
+ //Map.setCenter(-90.162, 29.8597, 10);   // New Orleans, USA
+ Map.setCenter(-95.329268, 29.775947, 10);    // Houston, USA
 // Map.setCenter(-114.9774, 31.9254, 10); // Mouth of the Colorado River, Mexico
 // Map.setCenter(-111.1871, 37.0963, 11); // Lake Powell, USA
 // Map.setCenter(149.412, -35.0789, 11);  // Lake George, Australia
@@ -58,10 +59,13 @@ Map.addLayer({
   visParams: VIS_OCCURRENCE
 });
 
+
+// Add WRI Power Plants
+
 var fvLayer = ui.Map.FeatureViewLayer('WRI/GPPD/power_plants_FeatureView');
 
 
-// comment
+// select different types of plants and assign colors 
 var visParams = {
   opacity: 1,
   color: {
@@ -80,6 +84,8 @@ var visParams = {
     ],
     defaultValue: 'FFFFFF'
   },
+  
+  // make the dot size aligned with mw capacity
   rules: [
     {
       filter: ee.Filter.expression('capacitymw < 500'),
@@ -94,9 +100,67 @@ var visParams = {
       pointSize: 15,
     }
   ]
+  
 };
 
 fvLayer.setVisParams(visParams);
 fvLayer.setName('Power plant (fuel type and capacity)');
 
 Map.add(fvLayer);
+
+
+// Output
+
+// Visualization for WRI/GPPD/power_plants
+// https://code.earthengine.google.com/9efbd726e4a8ba9b8b56ba94f1267678
+
+var table = ee.FeatureCollection("WRI/GPPD/power_plants");
+
+// Get a color from a fuel
+var fuelColor = ee.Dictionary({
+  'Coal': '000000',
+  'Oil': '593704',
+  'Gas': 'BC80BD',
+  'Hydro': '0565A6',
+  'Nuclear': 'E31A1C',
+  'Solar': 'FF7F00',
+  'Waste': '6A3D9A',
+  'Wind': '5CA2D1',
+  'Geothermal': 'FDBF6F',
+  'Biomass': '229A00'
+});
+
+// List of fuels to add to the map
+var fuels = ['Coal', 'Oil', 'Gas', 'Hydro', 'Nuclear', 'Solar', 'Waste',
+    'Wind', 'Geothermal', 'Biomass'];
+
+/**
+ * Computes size from capacity and color from fuel type.
+ *
+ * @param {!ee.Geometry.Point} pt A point
+ * @return {!ee.Geometry.Point} Input point with added style dictionary.
+ */
+function addStyle(pt) {
+  var size = ee.Number(pt.get('capacitymw')).sqrt().divide(10).add(2);
+  var color = fuelColor.get(pt.get('fuel1'));
+  return pt.set('styleProperty', ee.Dictionary({'pointSize': size, 'color': color}));
+}
+
+// Make a FeatureCollection out of the power plant data table
+var pp = ee.FeatureCollection(table).map(addStyle);
+print(pp.first());
+
+/**
+ * Adds power plants of a certain fuel type to the map.
+ *
+ * @param {string} fuel A fuel type
+ */
+function addLayer(fuel) {
+  print(fuel);
+  Map.addLayer(pp.filter(ee.Filter.eq('fuel1', fuel)).style({styleProperty: 'styleProperty', neighborhood: 50}), {}, fuel, true, 0.65);
+}
+
+// Apply `addLayer` to each record in `fuels`
+fuelColor.keys().evaluate(function(fuelsList) {
+  fuelsList.map(addLayer);
+});

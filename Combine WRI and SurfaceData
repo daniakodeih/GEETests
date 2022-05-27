@@ -73,7 +73,7 @@ var visParams = {
     categories: [
       ['Coal', '000000'],
       ['Oil', '593704'],
-      ['Gas', 'BC80BD'],
+      ['Gas', '00FF00'],
       ['Hydro', '0565A6'],
       ['Nuclear', 'E31A1C'],
       ['Solar', 'FF7F00'],
@@ -116,11 +116,12 @@ Map.add(fvLayer);
 
 var table = ee.FeatureCollection("WRI/GPPD/power_plants");
 
+// Pink  'Gas': 'BC80BD',
 // Get a color from a fuel
 var fuelColor = ee.Dictionary({
   'Coal': '000000',
   'Oil': '593704',
-  'Gas': 'BC80BD',
+  'Gas': '00FF00',
   'Hydro': '0565A6',
   'Nuclear': 'E31A1C',
   'Solar': 'FF7F00',

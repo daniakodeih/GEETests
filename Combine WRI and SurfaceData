@@ -168,8 +168,21 @@ fuelColor.keys().evaluate(function(fuelsList) {
 */
 
 
+// Add Floods 
 
 var gfd = ee.ImageCollection("GLOBAL_FLOOD_DB/MODIS_EVENTS/V1")
+
+// An individual flood event - flooding due to Hurricane Isaac in the USA.
+var hurricaneIsaacDartmouthId = 3977;
+var hurricaneIsaacUsa = ee.Image(
+    gfd.filterMetadata('id', 'equals', hurricaneIsaacDartmouthId).first());
+Map.setOptions('STREET');
+Map.setCenter(-90.2922, 29.4064, 9);
+Map.addLayer(
+  hurricaneIsaacUsa.select('flooded').selfMask(),
+  {min: 0, max: 1, palette: '001133'},
+  'Hurricane Isaac - Inundation Extent');
+  
 // The duration (number of days a flood event lasted).
 var durationPalette = ['C3EFFE', '1341E8', '051CB0', '001133'];
 Map.addLayer(

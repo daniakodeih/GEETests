@@ -170,7 +170,6 @@ fuelColor.keys().evaluate(function(fuelsList) {
 
 
 var gfd = ee.ImageCollection("GLOBAL_FLOOD_DB/MODIS_EVENTS/V1")
-
 // The duration (number of days a flood event lasted).
 var durationPalette = ['C3EFFE', '1341E8', '051CB0', '001133'];
 Map.addLayer(

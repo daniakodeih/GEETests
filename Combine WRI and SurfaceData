@@ -167,7 +167,18 @@ fuelColor.keys().evaluate(function(fuelsList) {
 });
 */
 
+
+
 var gfd = ee.ImageCollection("GLOBAL_FLOOD_DB/MODIS_EVENTS/V1")
+
+// The duration (number of days a flood event lasted).
+var durationPalette = ['C3EFFE', '1341E8', '051CB0', '001133'];
+Map.addLayer(
+  hurricaneIsaacUsa.select('duration').selfMask(),
+  {min: 0, max: 4, palette: durationPalette},
+  'Hurricane Isaac - Duration');
+  
+  
 // Map all floods to generate the satellite-observed historical flood plain.
 var gfdFloodedSum = gfd.select('flooded').sum();
 Map.addLayer(

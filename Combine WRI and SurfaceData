@@ -153,10 +153,10 @@ print(pp.first());
 
 /**
  * Adds power plants of a certain fuel type to the map.
- *
+ * This adds single fuel layers to the map, turning off for now
  * @param {string} fuel A fuel type
  */
-function addLayer(fuel) {
+/*function addLayer(fuel) {
   print(fuel);
   Map.addLayer(pp.filter(ee.Filter.eq('fuel1', fuel)).style({styleProperty: 'styleProperty', neighborhood: 50}), {}, fuel, true, 0.65);
 }
@@ -165,3 +165,4 @@ function addLayer(fuel) {
 fuelColor.keys().evaluate(function(fuelsList) {
   fuelsList.map(addLayer);
 });
+*/

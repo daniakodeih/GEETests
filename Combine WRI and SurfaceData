@@ -181,18 +181,25 @@ var hurricaneIsaacUsa = ee.Image(
 
 print(hurricaneIsaacUsa)
 
+// This function adds a band representing the image timestamp.
+var addTime = function(image) {
+  return image.addBands(image.metadata('system:time_start')
+    // Convert milliseconds from epoch to years to aid in
+    // interpretation of the following trend calculation.
+    .divide(1000 * 60 * 60 * 24 * 365));
+};
 
 // Define reference conditions from the first 10 years of data.
-var reference = gfd.filterDate('2000-01-01', '2010-12-31')
-  // Sort chronologically in descending order.
-  .sort('system:time_start', false);
+var reference = gfd.filterDate('2000-01-01', '2010-12-31').map(addTime)
+
 
 print(reference)
 
 // Compute the mean of the first 5 years.
-var mean = reference.mean();
+var min = gfd.min();
+print(min);
 
-print(mean);
+Map.addLayer(min, {bands: ['flooded'], max: 1}, 'Mean');
   
 // This is a function to pass to Iterate().
 // As anomaly images are computed, add them to the list.
@@ -213,19 +220,7 @@ var series = gfd.filterDate('2017-01-01', '2018-12-31').map(function(image) {
 
 print(series);
 
-// This function adds a band representing the image timestamp.
-var addTime = function(image) {
-  return image.addBands(image.getNumber('system:time_start'));
-};
 
-// Map the function over the collection and display the result.
-//print(gfd.map(addTime));
-
-//var cumulative = ee.ImageCollection(series.iterate(accumulate, series.first()));
-
-//print (cumulative);
-
-Map.addLayer(series.sum());
 
 Map.addLayer(
   hurricaneIsaacUsa.select('flooded').selfMask(),
@@ -239,16 +234,7 @@ Map.addLayer(
   {min: 0, max: 4, palette: durationPalette},
   'Hurricane Isaac - Duration');
   
-// Define a list of unique observation years from the image collection.
-//var years = series.aggregate_array('id').distinct().sort();
 
-var list = ee.FeatureCollection(series);
-
-// Convert the image List to an ImageCollection.
-var lsCompCol = ee.ImageCollection.fromImages(list);
-  
-print (lsCompCol);
-Map.addLayer(lsCompCol);
 
 // Map all floods to generate the satellite-observed historical flood plain.
 var gfdFloodedSum = gfd.select('flooded').sum();

@@ -73,7 +73,7 @@ var visParams = {
     categories: [
       ['Coal', '000000'],
       ['Oil', '593704'],
-      ['Gas', '00FF00'],
+      ['Gas', '22FF22'],
       ['Hydro', '0565A6'],
       ['Nuclear', 'E31A1C'],
       ['Solar', 'FF7F00'],

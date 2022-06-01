@@ -140,6 +140,7 @@ var fuels = ['Coal', 'Oil', 'Gas', 'Hydro', 'Nuclear', 'Solar', 'Waste',
  *
  * @param {!ee.Geometry.Point} pt A point
  * @return {!ee.Geometry.Point} Input point with added style dictionary.
+ * only visible in printed output since the map layer using this method is commented out below. Kept to print data
  */
 function addStyle(pt) {
   var size = ee.Number(pt.get('capacitymw')).sqrt().divide(10).add(2);

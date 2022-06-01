@@ -68,6 +68,7 @@ var fvLayer = ui.Map.FeatureViewLayer('WRI/GPPD/power_plants_FeatureView');
 // select different types of plants and assign colors 
 var visParams = {
   opacity: 1,
+  pointShape: 'diamond',
   color: {
     property: 'fuel1',
     categories: [
